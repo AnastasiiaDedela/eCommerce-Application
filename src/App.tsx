@@ -1,15 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getApiRoot, projectKey } from './api'
+
 import './App.css'
 
 function App() {
-  const [counter, setCounter] = useState<number>(0)
+  const [projectDetails, setProjectDetails] = useState<{ limit: number } | null>(null)
+
+  const getProject = async () => {
+    try {
+      const project = await getApiRoot().withProjectKey({ projectKey }).products().get().execute()
+
+      // .customers()
+      // .get()
+      // .execute()
+
+      setProjectDetails(project.body)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    getProject()
+  }, [])
 
   return (
     <>
-      <p>Local Counter in App: {counter}</p>
-      <button onClick={() => setCounter(counter + 1)}>Increase</button>
-
-      <br />
+      <div>Project Details</div>
+      {projectDetails?.limit}
     </>
   )
 }
