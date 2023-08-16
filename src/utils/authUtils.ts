@@ -21,7 +21,7 @@ export const authenticateUser = async (email: string, password: string): Promise
       const token = response.data.token
       const user = response.data.user
       console.log('результат', token, user)
-      // Сохранение токена и данных пользователя в состоянии/хранилище.
+      // Сохранение токена и данных пользователя в состоянии/хранилище//.
 
       return true
     } else {
