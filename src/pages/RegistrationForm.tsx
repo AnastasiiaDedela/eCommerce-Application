@@ -10,10 +10,29 @@ const RegistrationPage: React.FC = () => {
   const [login, setLogin] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-
+  const [addressInfo, setAddressInfo] = useState<Address>({
+    streetName: '',
+    city: '',
+    postalCode: '',
+    country: '',
+    state: '',
+  })
+  interface Address {
+    streetName: string
+    city: string
+    postalCode: string
+    country: string
+    state: string
+  }
   const handleRegistration = async () => {
     try {
-      const isRegistered = await registerUser(firstName, lastName, login, password)
+      const isRegistered = await registerUser(
+        firstName,
+        lastName,
+        login,
+        password,
+        addressInfo // Передаем данные адреса как параметр
+      )
       if (isRegistered) {
         navigate('/')
       } else {
@@ -44,6 +63,82 @@ const RegistrationPage: React.FC = () => {
         <label htmlFor="password">Пароль:</label>
         <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </div>
+      <div>
+        <label htmlFor="streetName">Улица:</label>
+        <input
+          type="text"
+          id="streetName"
+          value={addressInfo.streetName}
+          onChange={(e) =>
+            setAddressInfo({
+              ...addressInfo,
+              streetName: e.target.value,
+            })
+          }
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="city">Город:</label>
+        <input
+          type="text"
+          id="city"
+          value={addressInfo.city}
+          onChange={(e) =>
+            setAddressInfo({
+              ...addressInfo,
+              city: e.target.value,
+            })
+          }
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="postalCode">Почтовый индекс:</label>
+        <input
+          type="text"
+          id="postalCode"
+          value={addressInfo.postalCode}
+          onChange={(e) =>
+            setAddressInfo({
+              ...addressInfo,
+              postalCode: e.target.value,
+            })
+          }
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="country">Страна:</label>
+        <input
+          type="text"
+          id="country"
+          value={addressInfo.country}
+          onChange={(e) =>
+            setAddressInfo({
+              ...addressInfo,
+              country: e.target.value,
+            })
+          }
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="state">Область/штат:</label>
+        <input
+          type="text"
+          id="state"
+          value={addressInfo.state}
+          onChange={(e) =>
+            setAddressInfo({
+              ...addressInfo,
+              state: e.target.value,
+            })
+          }
+          required
+        />
+      </div>
+
       <div>
         <button type="button" onClick={handleRegistration}>
           Зарегистрироваться

@@ -31,12 +31,19 @@ export const authenticateUser = async (email: string, password: string): Promise
     throw error
   }
 }
-
+interface Address {
+  streetName: string
+  city: string
+  postalCode: string
+  country: string
+  state: string
+}
 interface CustomerData {
   firstName: string
   lastName: string
   email: string
   password: string
+  addresses: Address[]
 }
 
 interface CustomerResponseData {
@@ -48,7 +55,8 @@ export const registerUser = async (
   firstName: string,
   lastName: string,
   email: string,
-  password: string
+  password: string,
+  address: Address
 ): Promise<CustomerResponseData> => {
   const apiUrl = `/${commercetoolsConfig.projectKey}/customers`
 
@@ -57,6 +65,7 @@ export const registerUser = async (
     lastName,
     email,
     password,
+    addresses: [address],
   }
 
   try {
