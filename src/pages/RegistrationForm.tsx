@@ -10,19 +10,37 @@ const RegistrationPage: React.FC = () => {
   const [login, setLogin] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [addressInfo, setAddressInfo] = useState<Address>({
+  const [shippingAddress, setShippingAddress] = useState<Address>({
     streetName: '',
     city: '',
     postalCode: '',
     country: '',
     state: '',
   })
+
+  const [billingAddress, setBillingAddress] = useState<Address>({
+    streetName: '',
+    city: '',
+    postalCode: '',
+    country: '',
+    state: '',
+  })
+  const [isDefaultShippingAddress, setIsDefaultShippingAddress] = useState(false)
+  const [isDefaultBillingAddress, setIsDefaultBillingAddress] = useState(false)
   interface Address {
     streetName: string
     city: string
     postalCode: string
     country: string
     state: string
+  }
+  const handleShippingDefaultChange = () => {
+    setIsDefaultShippingAddress(!isDefaultShippingAddress) // Инвертируем значение
+  }
+
+  // Обработчик для чекбокса адреса платежа
+  const handleBillingDefaultChange = () => {
+    setIsDefaultBillingAddress(!isDefaultBillingAddress) // Инвертируем значение
   }
   const handleRegistration = async () => {
     try {
@@ -31,7 +49,9 @@ const RegistrationPage: React.FC = () => {
         lastName,
         login,
         password,
-        addressInfo // Передаем данные адреса как параметр
+        [shippingAddress, billingAddress],
+        isDefaultShippingAddress,
+        isDefaultBillingAddress // Передаем данные адреса как параметр
       )
       if (isRegistered) {
         navigate('/')
@@ -64,81 +84,175 @@ const RegistrationPage: React.FC = () => {
         <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </div>
       <div>
-        <label htmlFor="streetName">Улица:</label>
-        <input
-          type="text"
-          id="streetName"
-          value={addressInfo.streetName}
-          onChange={(e) =>
-            setAddressInfo({
-              ...addressInfo,
-              streetName: e.target.value,
-            })
-          }
-          required
-        />
+        {/* Форма для адреса доставки */}
+        <h3>Адрес доставки</h3>
+        <div>
+          <label htmlFor="streetNameShipping">Улица для доставки:</label>
+          <input
+            type="text"
+            id="streetNameShipping"
+            value={shippingAddress.streetName}
+            onChange={(e) =>
+              setShippingAddress({
+                ...shippingAddress,
+                streetName: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="cityShipping">Город для доставки:</label>
+          <input
+            type="text"
+            id="cityShipping"
+            value={shippingAddress.city}
+            onChange={(e) =>
+              setShippingAddress({
+                ...shippingAddress,
+                city: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="postalCodeShipping">Почтовый индекс для доставки:</label>
+          <input
+            type="text"
+            id="postalCodeShipping"
+            value={shippingAddress.postalCode}
+            onChange={(e) =>
+              setShippingAddress({
+                ...shippingAddress,
+                postalCode: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="countryShipping">Страна для доставки:</label>
+          <input
+            type="text"
+            id="countryShipping"
+            value={shippingAddress.country}
+            onChange={(e) =>
+              setShippingAddress({
+                ...shippingAddress,
+                country: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="stateShipping">Область/штат для доставки:</label>
+          <input
+            type="text"
+            id="stateShipping"
+            value={shippingAddress.state}
+            onChange={(e) =>
+              setShippingAddress({
+                ...shippingAddress,
+                state: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
       </div>
       <div>
-        <label htmlFor="city">Город:</label>
-        <input
-          type="text"
-          id="city"
-          value={addressInfo.city}
-          onChange={(e) =>
-            setAddressInfo({
-              ...addressInfo,
-              city: e.target.value,
-            })
-          }
-          required
-        />
+        <label>
+          <input type="checkbox" checked={isDefaultShippingAddress} onChange={handleShippingDefaultChange} />
+          Сделать адрес доставки дефолтным
+        </label>
       </div>
       <div>
-        <label htmlFor="postalCode">Почтовый индекс:</label>
-        <input
-          type="text"
-          id="postalCode"
-          value={addressInfo.postalCode}
-          onChange={(e) =>
-            setAddressInfo({
-              ...addressInfo,
-              postalCode: e.target.value,
-            })
-          }
-          required
-        />
+        {/* Форма для адреса платежа */}
+        <h3>Адрес платежа</h3>
+        <div>
+          <label htmlFor="streetNameBilling">Улица для платежа:</label>
+          <input
+            type="text"
+            id="streetNameBilling"
+            value={billingAddress.streetName}
+            onChange={(e) =>
+              setBillingAddress({
+                ...billingAddress,
+                streetName: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="cityBilling">Город для платежа:</label>
+          <input
+            type="text"
+            id="cityBilling"
+            value={billingAddress.city}
+            onChange={(e) =>
+              setBillingAddress({
+                ...billingAddress,
+                city: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="postalCodeBilling">Почтовый индекс для платежа:</label>
+          <input
+            type="text"
+            id="postalCodeBilling"
+            value={billingAddress.postalCode}
+            onChange={(e) =>
+              setBillingAddress({
+                ...billingAddress,
+                postalCode: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="countryBilling">Страна для платежа:</label>
+          <input
+            type="text"
+            id="countryBilling"
+            value={billingAddress.country}
+            onChange={(e) =>
+              setBillingAddress({
+                ...billingAddress,
+                country: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="stateBilling">Область/штат для платежа:</label>
+          <input
+            type="text"
+            id="stateBilling"
+            value={billingAddress.state}
+            onChange={(e) =>
+              setBillingAddress({
+                ...billingAddress,
+                state: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label>
+            <input type="checkbox" checked={isDefaultBillingAddress} onChange={handleBillingDefaultChange} />
+            Сделать адрес платежа дефолтным
+          </label>
+        </div>
       </div>
-      <div>
-        <label htmlFor="country">Страна:</label>
-        <input
-          type="text"
-          id="country"
-          value={addressInfo.country}
-          onChange={(e) =>
-            setAddressInfo({
-              ...addressInfo,
-              country: e.target.value,
-            })
-          }
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="state">Область/штат:</label>
-        <input
-          type="text"
-          id="state"
-          value={addressInfo.state}
-          onChange={(e) =>
-            setAddressInfo({
-              ...addressInfo,
-              state: e.target.value,
-            })
-          }
-          required
-        />
-      </div>
-
       <div>
         <button type="button" onClick={handleRegistration}>
           Зарегистрироваться

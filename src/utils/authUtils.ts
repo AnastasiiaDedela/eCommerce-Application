@@ -44,6 +44,10 @@ interface CustomerData {
   email: string
   password: string
   addresses: Address[]
+  defaultShippingAddress?: number
+  defaultBillingAddress?: number
+  shippingAddresses: number[] // Добавляем опциональное поле для индекса
+  billingAddresses: number[]
 }
 
 interface CustomerResponseData {
@@ -56,7 +60,9 @@ export const registerUser = async (
   lastName: string,
   email: string,
   password: string,
-  address: Address
+  addresses: Address[],
+  shippingDefault: boolean,
+  billingDefault: boolean
 ): Promise<CustomerResponseData> => {
   const apiUrl = `/${commercetoolsConfig.projectKey}/customers`
 
@@ -65,7 +71,15 @@ export const registerUser = async (
     lastName,
     email,
     password,
-    addresses: [address],
+    addresses,
+    shippingAddresses: [0], // Устанавливаем индекс адреса как шипинг адрес
+    billingAddresses: [1],
+  }
+  if (shippingDefault) {
+    requestData.defaultShippingAddress = 0 // Указываем индекс адреса доставки как 0
+  }
+  if (billingDefault) {
+    requestData.defaultBillingAddress = 1 // Указываем индекс адреса платежа как 0
   }
 
   try {
