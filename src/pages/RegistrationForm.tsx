@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { registerUser } from '../utils/authUtils'
+import isoCountries from 'i18n-iso-countries'
+import enLocale from 'i18n-iso-countries/langs/en.json'
+// Регистрируем локализацию для английского языка
 
 const RegistrationPage: React.FC = () => {
   const navigate = useNavigate()
@@ -34,6 +37,8 @@ const RegistrationPage: React.FC = () => {
     country: string
     state: string
   }
+
+  isoCountries.registerLocale(enLocale)
   const handleShippingDefaultChange = () => {
     setIsDefaultShippingAddress(!isDefaultShippingAddress) // Инвертируем значение
   }
@@ -44,19 +49,36 @@ const RegistrationPage: React.FC = () => {
   }
   const handleRegistration = async () => {
     try {
-      const isRegistered = await registerUser(
-        firstName,
-        lastName,
-        login,
-        password,
-        [shippingAddress, billingAddress],
-        isDefaultShippingAddress,
-        isDefaultBillingAddress // Передаем данные адреса как параметр
-      )
-      if (isRegistered) {
-        navigate('/')
+      const shippingCountryCode = isoCountries.getAlpha2Code(shippingAddress.country, 'en')
+      const billingCountryCode = isoCountries.getAlpha2Code(billingAddress.country, 'en')
+
+      if (shippingCountryCode && billingCountryCode) {
+        const isRegistered = await registerUser(
+          firstName,
+          lastName,
+          login,
+          password,
+          [
+            {
+              ...shippingAddress,
+              country: shippingCountryCode, // Заменяем название страны на код
+            },
+            {
+              ...billingAddress,
+              country: billingCountryCode, // Заменяем название страны на код
+            },
+          ],
+          isDefaultShippingAddress,
+          isDefaultBillingAddress
+        )
+
+        if (isRegistered) {
+          navigate('/')
+        } else {
+          setError('Произошла ошибка при регистрации.')
+        }
       } else {
-        setError('Произошла ошибка при регистрации.')
+        setError('Неверное название страны.')
       }
     } catch (error) {
       setError('Произошла ошибка при регистрации.')
