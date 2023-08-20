@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 
 class AuthStore {
   isAuthenticated = false;
-  token: string | null = null;
+  token!: string | null;
 
   constructor() {
     makeAutoObservable(this);

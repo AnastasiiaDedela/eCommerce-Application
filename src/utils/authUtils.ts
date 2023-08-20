@@ -22,10 +22,7 @@ const loginData: LoginData = {
 
     if (response.status === 200) {
       navigate('/')
-      const authData = JSON.parse(localStorage.getItem('authData')!);
-      authData.accessToken = response.data.token;
-      localStorage.setItem('authData', JSON.stringify(authData));
-      console.log('результат', authData)
+      console.log('результат')
       return true
     } else {
       return false
