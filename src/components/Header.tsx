@@ -31,9 +31,11 @@ const Header: React.FC = () => {
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Animal Kingdom Market
         </Typography>
-        <Button color="inherit" component={Link} to="/registrations">
-          Регистрация
-        </Button>
+        {!isLoggedIn && (
+          <Button color="inherit" component={Link} to="/registrations">
+            Регистрация
+          </Button>
+        )}
         {isLoggedIn ? (
           <>
             <Button color="inherit" onClick={handleLogout}>
