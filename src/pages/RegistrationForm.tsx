@@ -6,10 +6,14 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { registerUser } from '../utils/authUtils'
 import { RegistrationValues } from '../types/interfaces'
+import { useRootStore } from '../App'
 
 const RegistrationPage: React.FC = () => {
   const [isDefaultShippingAddress, setIsDefaultShippingAddress] = useState(false)
   const [isDefaultBillingAddress, setIsDefaultBillingAddress] = useState(false)
+  const rootStore = useRootStore()
+  const { authStore } = rootStore
+
   const navigate = useNavigate()
 
   const initialValues: RegistrationValues = {
@@ -95,6 +99,7 @@ const RegistrationPage: React.FC = () => {
       )
 
       if (isRegistered) {
+        authStore.login()
         navigate('/')
       }
     } catch (error) {

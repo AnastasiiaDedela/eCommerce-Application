@@ -1,24 +1,23 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable } from 'mobx'
 
 class AuthStore {
-  isAuthenticated = false;
-  token!: string | null;
+  isAuthenticated = false
+  token: string | null = null
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this)
   }
 
   login() {
     this.isAuthenticated = true
-    const authData = JSON.parse(localStorage.getItem('authData')!)
-    this.token = authData;
+    // this.token = token
   }
 
   logout() {
-    this.isAuthenticated = false;
-    this.token = null;
-    localStorage.removeItem('authData');
+    this.isAuthenticated = false
+    // this.token = null;
+    // console.log(this)
   }
 }
 
-export default AuthStore;
+export default AuthStore
