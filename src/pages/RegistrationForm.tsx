@@ -39,7 +39,7 @@ const RegistrationPage: React.FC = () => {
     firstName: Yup.string().required('Имя обязательно'),
     lastName: Yup.string().required('Фамилия обязательна'),
     login: Yup.string().required('Логин обязателен'),
-    password: Yup.string().min(6, 'Пароль должен содержать не менее 6 символов').required('Пароль обязателен'),
+    password: Yup.string().min(8, 'Пароль должен содержать не менее 6 символов').required('Пароль обязателен'),
     shippingAddress: Yup.object().shape({
       streetName: Yup.string().required('Улица для доставки обязательна'),
       city: Yup.string().required('Город для доставки обязателен'),

@@ -8,9 +8,10 @@ class AuthStore {
     makeAutoObservable(this);
   }
 
-  login(token: string) {
+  login() {
     this.isAuthenticated = true
-    this.token = token;
+    const authData = JSON.parse(localStorage.getItem('authData')!)
+    this.token = authData;
   }
 
   logout() {

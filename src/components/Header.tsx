@@ -15,8 +15,7 @@ const Header: React.FC = () => {
     authStore.isAuthenticated = true
     setIsLoggedIn(true)
     navigate('/login')
-    const authData = JSON.parse(localStorage.getItem('authData')!)
-    authStore.login(authData.accessToken)
+    authStore.login()
   }
   const handleLogout = () => {
     authStore.logout()
