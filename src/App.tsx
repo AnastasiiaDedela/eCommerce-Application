@@ -9,6 +9,7 @@ import ProductDetailPage from './pages/ProductDetailPage'
 import UserProfilePage from './pages/UserProfilePage'
 import NotFound from './pages/NotFound'
 import CategoriesPage from './pages/CategoriesPage'
+import { getUniqueAttributes } from './utils/FilterUtils'
 
 const subcategories = [
   { id: 1, name: 'Subcategory 1' },
@@ -39,7 +40,7 @@ function App() {
 }
 
 export default App
-
+getUniqueAttributes()
 export function useRootStore() {
   const context = useContext(RootStoreContext)
   if (!context) {

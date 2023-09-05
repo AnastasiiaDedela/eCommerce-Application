@@ -5,12 +5,14 @@
   text-align: center;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   text-align: center;
   margin: 0;
   padding: 0;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .footer {
@@ -44,8 +46,6 @@ html, body, #root {
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
-
-
 
 @keyframes logo-spin {
   from {

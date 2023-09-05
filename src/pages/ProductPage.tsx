@@ -1,12 +1,20 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRootStore } from '../App'
 import ProductCard from '../components/ProductCard'
 import Header from '../components/Header'
 import { Box, Container, Grid, useMediaQuery, useTheme } from '@mui/material'
+import FilterComponent from '../components/Filters'
+import { Product } from '../components/Filters'
 
 const ProductPage: React.FC = () => {
   const { catalogStore } = useRootStore()
+
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(catalogStore.products)
+
+  const handleFilterButtonClick = async (filters: Product[]) => {
+    setFilteredProducts(filters) // Обновляем состояние с отфильтрованными товарами
+  }
 
   useEffect(() => {
     catalogStore.fetchProducts()
@@ -17,25 +25,25 @@ const ProductPage: React.FC = () => {
 
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const handleScroll = () => {
-    if (containerRef.current) {
-      const { scrollHeight, scrollTop, clientHeight } = containerRef.current
-      if (scrollHeight - (scrollTop + clientHeight) < 1000) {
-        catalogStore.fetchProducts()
-      }
-    }
-  }
+  // const handleScroll = () => {
+  //   if (containerRef.current) {
+  //     const { scrollHeight, scrollTop, clientHeight } = containerRef.current
+  //     if (scrollHeight - (scrollTop + clientHeight) < 1000) {
+  //       catalogStore.fetchProducts()
+  //     }
+  //   }
+  // }
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [handleScroll])
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll)
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll)
+  //   }
+  // }, [handleScroll])
 
   const repeatedGrid = (
     <Grid container spacing={isMobile ? 2 : 3}>
-      {catalogStore.products.map((product) => (
+      {filteredProducts.map((product) => (
         <Grid key={product.id} item xs={12} sm={6} md={4} lg={4}>
           <ProductCard product={product} />
         </Grid>
@@ -46,6 +54,7 @@ const ProductPage: React.FC = () => {
   return (
     <div>
       <Header subcategories={[]} />
+      <FilterComponent onFilterChange={handleFilterButtonClick} />
       <Container maxWidth="lg">
         <Box mt={10} ref={containerRef}>
           {repeatedGrid}
