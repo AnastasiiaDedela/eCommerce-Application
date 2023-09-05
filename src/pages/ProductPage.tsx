@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRootStore } from '../App'
 import ProductCard from '../components/ProductCard'
@@ -10,15 +10,15 @@ import { Product } from '../components/Filters'
 const ProductPage: React.FC = () => {
   const { catalogStore } = useRootStore()
 
+  // useEffect(() => {
+  //   catalogStore.fetchProducts()
+  // }, [catalogStore])
+
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(catalogStore.products)
 
   const handleFilterButtonClick = async (filters: Product[]) => {
     setFilteredProducts(filters) // Обновляем состояние с отфильтрованными товарами
   }
-
-  useEffect(() => {
-    catalogStore.fetchProducts()
-  }, [catalogStore])
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))

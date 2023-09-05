@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import { Container, List, ListItem, ListItemText, Typography, Drawer, Divider, useTheme } from '@mui/material'
-
+import { useRootStore } from '../App'
 interface Subcategory {
   id: number
   name: string
@@ -15,11 +15,13 @@ interface CategoriesPageProps {
 const CategoriesPage: React.FC<CategoriesPageProps> = ({ subcategories }) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const theme = useTheme()
-
+  const { catalogStore } = useRootStore()
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open)
   }
-
+  useEffect(() => {
+    catalogStore.fetchProducts()
+  }, [])
   const categoryLinkStyle: React.CSSProperties = {
     textDecoration: 'none',
     color: theme.palette.text.primary,
