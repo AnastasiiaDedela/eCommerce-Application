@@ -15,22 +15,7 @@ import { useState, useEffect } from 'react'
 const CartPage = () => {
   const { cartStore, catalogStore, headerStore } = useRootStore()
   const [cartItemsLocal, setCartItemsLocal] = useState<CartItem[]>([])
-
-  /* const [promoCodeInput, setPromoCodeInput] = useState('')
-  const DataPromoCode = localStorage.getItem('promoCode')
-  const promoCode = JSON.parse(DataPromoCode!)
-  const [activePromoCodes, setActivePromoCodes] = useState<string[]>(promoCode)
-  console.log(setActivePromoCodes)
-
-  const handleApplyPromoCode = () => {
-    if (promoCodeInput && activePromoCodes.includes(promoCodeInput)) {
-      cartStore.applyPromoCode(promoCodeInput)
-      setPromoCodeInput('')
-    } else {
-      alert('Недействительный промокод')
-    }
-  }*/
-
+  const [promoCodeInput, setPromoCodeInput] = useState('')
   useEffect(() => {
     const fetchData = async () => {
       await cartStore.createCart()
@@ -44,6 +29,15 @@ const CartPage = () => {
 
     fetchData()
   }, [cartStore])
+
+  const handleApplyPromoCode = () => {
+    if (promoCodeInput) {
+      cartStore.applyPromoCode(promoCodeInput)
+      setPromoCodeInput('')
+    } else {
+      alert('Недействительный промокод')
+    }
+  }
 
   const calculateTotalPrice = () => {
     let total = 0
@@ -115,10 +109,8 @@ const CartPage = () => {
     }
   }
   const hasItemsInCart = cartItemsLocal!.some((item) => item !== null)
-  console.log('sadasda')
   const cartItems = cartItemsLocal.map((item) => {
     const product: Product | undefined = catalogStore.getProductById(item.productId)
-    console.log(product)
     if (product) {
       return (
         <>
@@ -184,8 +176,6 @@ const CartPage = () => {
       return null
     }
   })
-  console.log(cartItems)
-  console.log(hasItemsInCart)
   return (
     <Container>
       <Header subcategories={[]} />
@@ -201,16 +191,16 @@ const CartPage = () => {
             <Button variant="outlined" color="primary">
               <Link to="/catalog">CONTINUE SHOPPING</Link>
             </Button>
-            {/*<div>
-            <input
-              type="text"
-              placeholder="Enter promotional code"
-              value={promoCodeInput}
-              onChange={(e) => setPromoCodeInput(e.target.value)}
-              className="cart-input"
-            />
-            <button onClick={handleApplyPromoCode}>Apply</button>
-        </div>*/}
+            <div>
+              <input
+                type="text"
+                placeholder="Enter promotional code"
+                value={promoCodeInput}
+                onChange={(e) => setPromoCodeInput(e.target.value)}
+                className="cart-input"
+              />
+              <button onClick={handleApplyPromoCode}>Apply</button>
+            </div>
           </div>
           {hasItemsInCart && (
             <div className="cart-buttons">

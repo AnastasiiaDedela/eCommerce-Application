@@ -191,6 +191,22 @@ class CartStore {
       this.isLoading = false
     }
   }
+  async applyPromoCode(promo: string) {
+    const cartId: string = localStorage.getItem('cartId')!
+
+    const currentCartState = await this.getCurrentCartState(cartId)
+    const requestData = {
+      version: currentCartState.version,
+      actions: [
+        {
+          action: 'addDiscountCode',
+          code: promo,
+        },
+      ],
+    }
+
+    await api.post(`${commercetoolsConfig.api}/${commercetoolsConfig.projectKey}/me/carts/${cartId}`, requestData)
+  }
 }
 
 export default CartStore
