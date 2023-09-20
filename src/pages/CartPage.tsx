@@ -11,7 +11,8 @@ import { Carousel } from 'react-responsive-carousel'
 import Footer from '../components/Footer'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-
+import api from '../api/axios'
+import { commercetoolsConfig } from '../commercetoolsConfig'
 const CartPage = () => {
   const { cartStore, catalogStore, headerStore } = useRootStore()
   const [cartItemsLocal, setCartItemsLocal] = useState<CartItem[]>([])
@@ -29,11 +30,35 @@ const CartPage = () => {
 
     fetchData()
   }, [cartStore])
-
-  const handleApplyPromoCode = () => {
+  const handleApplyPromoCode = async () => {
     if (promoCodeInput) {
-      cartStore.applyPromoCode(promoCodeInput)
+      // cartStore.applyPromoCode(promoCodeInput)
       setPromoCodeInput('')
+      try {
+        const cartId: string = localStorage.getItem('cartId')!
+
+        const currentCartState = await cartStore.getCurrentCartState(cartId)
+        const requestData = {
+          version: currentCartState.version,
+          actions: [
+            {
+              action: 'addDiscountCode',
+              code: promoCodeInput,
+            },
+          ],
+        }
+        await api.post(`${commercetoolsConfig.api}/${commercetoolsConfig.projectKey}/me/carts/${cartId}`, requestData)
+
+        // Обновляем состояние корзины
+        await cartStore.getCurrentCartState(cartId)
+
+        // Обновляем состояние cartItemsLocal
+        const items = localStorage.getItem('cartItem')!
+        const parsedItems: CartItem[] = JSON.parse(items)
+        setCartItemsLocal(parsedItems)
+      } catch (error) {
+        console.error('Произошла ошибка при применении промокода:', error)
+      }
     } else {
       alert('Недействительный промокод')
     }
@@ -41,12 +66,25 @@ const CartPage = () => {
 
   const calculateTotalPrice = () => {
     let total = 0
+
     cartItemsLocal.forEach((item) => {
       const product: Product | undefined = catalogStore.getProductById(item.productId)
+
       if (product) {
-        total += (product.price[0] * item.quantity) / 100
+        let price = 0
+
+        if (item.discount) {
+          price = item.discount
+        } else if (typeof item.discountPrice === 'number') {
+          price = item.discountPrice
+        } else {
+          price = item.price
+        }
+
+        total += (price * item.quantity) / 100
       }
     })
+
     return total
   }
   const handleRemoveFromCart = async (productId: string) => {
@@ -55,8 +93,6 @@ const CartPage = () => {
     // Обновляем cartItemsLocal без использования флага
     const updatedCartItems = cartItemsLocal.filter((item) => item.productId !== productId)
     setCartItemsLocal(updatedCartItems)
-    const cartItem = JSON.parse(localStorage.getItem('cartItem')!)
-    console.log(cartItem)
 
     headerStore.decrementCartCount()
   }
@@ -70,8 +106,13 @@ const CartPage = () => {
       }
 
       let updatedCartItem: CartItem
-
-      if (typeof cartItemToUpdate.discountPrice === 'number') {
+      if (cartItemToUpdate.discount) {
+        updatedCartItem = {
+          ...cartItemToUpdate,
+          quantity: quantity,
+          totalPrice: cartItemToUpdate.discount * quantity,
+        }
+      } else if (typeof cartItemToUpdate.discountPrice === 'number') {
         updatedCartItem = {
           ...cartItemToUpdate,
           quantity: quantity,
@@ -141,10 +182,13 @@ const CartPage = () => {
                     Price per unit: ${(item.price / 100).toFixed(2)}
                   </Typography>
                   <Typography variant="body2" color="textSecondary" gutterBottom>
-                    Discount Price:{' '}
-                    {typeof item.discountPrice === 'string'
-                      ? item.discountPrice
-                      : (item.discountPrice / 100).toFixed(2)}
+                    {item.discount
+                      ? `Discount: $${(item.discount / 100).toFixed(2)}`
+                      : `Discount Price: ${
+                          typeof item.discountPrice === 'string'
+                            ? item.discountPrice
+                            : `$${(item.discountPrice / 100).toFixed(2)}`
+                        }`}
                   </Typography>
                   <Typography variant="body2" color="textSecondary" gutterBottom>
                     Total Price: ${(item.totalPrice / 100).toFixed(2)}
@@ -176,6 +220,7 @@ const CartPage = () => {
       return null
     }
   })
+
   return (
     <Container>
       <Header subcategories={[]} />
