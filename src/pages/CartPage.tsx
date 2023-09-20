@@ -12,7 +12,9 @@ import Footer from '../components/Footer'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import api from '../api/axios'
+
 import { commercetoolsConfig } from '../commercetoolsConfig'
+
 const CartPage = () => {
   const { cartStore, catalogStore, headerStore } = useRootStore()
   const [cartItemsLocal, setCartItemsLocal] = useState<CartItem[]>([])
@@ -95,6 +97,23 @@ const CartPage = () => {
     setCartItemsLocal(updatedCartItems)
 
     headerStore.decrementCartCount()
+  }
+  const handleClearCart = async () => {
+    try {
+      const cartId: string = localStorage.getItem('cartId')!
+
+      const currentCartState = await cartStore.getCurrentCartState(cartId)
+      await api.delete(
+        `${commercetoolsConfig.api}/${commercetoolsConfig.projectKey}/me/carts/${cartId}?version=${currentCartState.version}`
+      )
+      localStorage.removeItem('cartId')
+      localStorage.removeItem('cartItem')
+      headerStore.setCartCount(0)
+
+      setCartItemsLocal([])
+    } catch (error) {
+      console.error('Произошла ошибка при обновлении количества товара в корзине:', error)
+    }
   }
   const handleupdateCartItemQuantity = async (productId: string, quantity: number) => {
     try {
@@ -224,7 +243,7 @@ const CartPage = () => {
   return (
     <Container>
       <Header subcategories={[]} />
-      <Grid container spacing={2} className="cart-container">
+      <Grid key={1} container spacing={2} className="cart-container">
         <div
           style={{
             display: 'inherit',
@@ -253,6 +272,7 @@ const CartPage = () => {
               <Button variant="contained" color="primary">
                 Сheckout
               </Button>
+              <button onClick={handleClearCart}>ClearCart</button>
             </div>
           )}
         </div>
