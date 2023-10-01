@@ -19,6 +19,8 @@ const SubcategoryPage: React.FC = () => {
   const [, setSelectedProduct] = useState<Product | null>(null)
   const [isAddedToCartMap, setIsAddedToCartMap] = useState<{ [productId: string]: boolean }>({})
   const product: Product = products[selectedImageIndex] || {}
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const currentLocale = 'en-US'
 
   useEffect(() => {
     if (categoryId) {
@@ -137,9 +139,13 @@ const SubcategoryPage: React.FC = () => {
                 boxShadow: '0 2px 60px #0000003d',
                 border: '1px solid #eaeaea',
                 zIndex: '10000',
+                overflow: 'auto',
+                overflowY: 'hidden',
                 height: 'auto',
               },
             }}
+            onMouseEnter={() => setHoveredCard(product.id)}
+            onMouseLeave={() => setHoveredCard(null)}
           >
             <CardMedia component="div">
               <Carousel
@@ -163,9 +169,6 @@ const SubcategoryPage: React.FC = () => {
             <CardContent sx={{ padding: '1rem', textAlign: 'center' }}>
               <Typography variant="h6" fontWeight="bold" fontSize="15px">
                 {product.name['en-US']}
-              </Typography>
-              <Typography variant="body2" fontSize="10px">
-                {product.description ? product.description['en-US'] : 'No description available'}
               </Typography>
               <Box display="flex" alignItems="center" justifyContent="center" sx={{ marginTop: '0.5rem' }}>
                 <Typography variant="body2" fontSize="12px" fontWeight="bold">
@@ -223,11 +226,16 @@ const SubcategoryPage: React.FC = () => {
               <MuiLink
                 component={Button}
                 color="primary"
-                sx={{ marginTop: '0.1rem' }}
+                sx={{ margin: '0.9rem' }}
                 onClick={() => handleViewDetails(product)}
               >
                 View Details
               </MuiLink>
+              <Typography variant="body2" fontSize={'10px'}>
+                {hoveredCard === product.id
+                  ? product.description[currentLocale]
+                  : `${product.description[currentLocale].slice(0, 70)}...`}
+              </Typography>
             </CardContent>
           </Card>
         ))}

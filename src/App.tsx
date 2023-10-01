@@ -15,7 +15,7 @@ import SubcategoryPage from './pages/subcategories'
 import CartPage from './pages/CartPage'
 import AboutUs from './pages/AboutUs'
 
-const RootStoreContext = createContext<RootStore | null>(null)
+export const RootStoreContext = createContext<RootStore | null>(null)
 
 function App() {
   const rootStore = new RootStore()

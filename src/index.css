@@ -152,6 +152,15 @@ button:focus-visible {
   border-radius: 6px;
   background-color: #d9dbf0;
 }
+.ellipsis {
+  overflow: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hidden {
+  display: none;
+}
 
 @media (max-width: 600px) {
   .cart-item {
@@ -176,3 +185,4 @@ button:focus-visible {
   margin-top: 30px;
   margin-bottom: 100px;
 }
+

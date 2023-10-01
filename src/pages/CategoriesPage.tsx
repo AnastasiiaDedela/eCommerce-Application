@@ -1,5 +1,5 @@
 import '../index.css'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, CSSProperties } from 'react'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { observer } from 'mobx-react-lite'
@@ -33,19 +33,36 @@ function CategoriesPage() {
     catalogStore.fetchProducts()
   }, [])
 
-  const categoryPaperStyle = {
-    marginTop: '60px',
-    backgroundColor: '#bbe4e9',
-    listStyle: 'none',
-    padding: '16px',
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    transition: 'transform 0.2s ease-in-out',
+  interface CategoryPaperStyle extends CSSProperties {
     '&:hover': {
-      transform: 'scale(1.03)',
+      position: string
+      left: string
+      boxShadow: string
+      border: string
+    }
+  }
+
+  const categoryPaperStyle: CategoryPaperStyle = {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '370px',
+    height: '400px',
+    margin: '0 auto',
+    padding: '15px',
+    background: '#fff',
+    borderRadius: '12px',
+    border: '1px solid #eaeaea',
+    overflow: 'hidden',
+    transition: 'all .5s ease',
+    '&:hover': {
+      position: 'absolute',
+      left: '9%',
+      boxShadow: '0 2px 60px #0000003d',
+      border: '1px solid #eaeaea',
     },
   }
+
   const backButtonStyle: React.CSSProperties = {
     marginTop: '30px',
     paddingLeft: '25px',
