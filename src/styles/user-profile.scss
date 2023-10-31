@@ -1,0 +1,309 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.user-profile__wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 25px 0 25px 0 ;
+    max-width: 80%;
+    margin: 64px auto 0 ;
+    position: relative;
+}
+
+.user-profile__wrapper {
+    list-style-type: none;
+}
+
+.user-photo {
+    height: 200px;
+    width: 200px;
+}
+
+.user-photo img {
+    max-width: 100%;
+    height: 100%;
+    
+}
+
+.user-profile__wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 70px - 64px - 50px);
+    row-gap: 60px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 22%;
+    position: relative; 
+    flex-wrap: wrap;
+    row-gap: 30px;
+}
+
+.user-info::after {
+    position: absolute;
+    content: '';
+    height: 1.5px;
+    background-color: rgba(162, 162, 162, 0.053);
+    width: 80%;
+    bottom: -30px;
+    align-self: center;
+}
+
+.user__data {
+    min-width: 30%;
+}
+.user-data__list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+.user-data__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-data__item input{
+    padding: 6px;
+    border: solid 2px rgba(27, 57, 134, 0.575);
+    border-radius: 5px;
+    // box-shadow: 0px 0px 13px -2px rgba(11, 68, 135, 1);
+    transition: border-color 0.3s ease;
+    animation: flicker 1s infinite;
+}
+
+@keyframes flicker {
+    0% {
+        border-color: #ccc;
+    }
+    50% {
+        border-color: rgb(74, 122, 234);
+    }
+    100% {
+        border-color: #ccc;
+    }
+}
+
+.user-input {
+    display: flex;
+    flex-direction: column-reverse;
+    row-gap: 3px;
+}
+
+.error-input {
+    font-size: 10px;
+    color: red;
+}
+
+.user-data__item p{
+    text-align: left;
+    min-width: 50%;
+}
+
+// .addresses {
+//     align-self: center;
+// }
+
+.addresses__list {
+    display: flex;
+    column-gap: 20px;
+    row-gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.addresses__item {
+    // justify-content: center;
+    column-gap: 20%;
+    width: 430px;
+    background-color: rgba(164, 209, 255, 0.107);
+    padding: 15px;
+    border-radius: 25px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 4px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 17px;
+}
+
+.address__details {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.address__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.address__item p {
+    text-align: left;
+    min-width: 33%;
+    
+}
+
+.title {
+    font-weight: 700;
+    color: rgb(17, 94, 171);
+    font-size: 16px;
+}
+
+.subtitle {
+    font-weight: 600;
+    color: rgb(30, 112, 194);
+    font-size: 15px;
+}
+
+.address-title {
+    text-align: center;
+}
+
+.profile-button {
+    width: 40%;
+    background-color: rgba(164, 209, 255, 0.474);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;
+    padding:  7px 8px;
+    font-size: 15px;
+}
+
+.profile-buttons {
+    display: flex;
+    column-gap: 7%;
+    padding-top: 7px;
+}
+
+.save-button {
+    background-color: rgba(138, 209, 185, 0.313);
+}
+
+.cancel-button {
+    background-color: rgba(209, 138, 153, 0.314);
+}
+
+.add-address {
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-address__btn {
+    position: absolute;
+    max-width: 205px;
+    display: flex;
+    column-gap: 7px;
+    border-radius: 7px;
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
+    left: 10%;
+}
+
+.custom-toast-container {
+    background-color: green;
+    /* Add other styles as needed */
+}
+
+.add-btn {
+    max-width: 25px;
+    height: 25px;
+}
+
+.add-btn img{
+    width: 100%;
+    height: 100%;
+}
+
+.address__header {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.address__action {
+    display: flex;
+    column-gap: 10px;
+}
+
+.address__action div {
+    cursor: pointer;
+}
+
+.edit__btn {
+    max-width: 27px;
+    height: auto;
+    cursor: pointer;
+}
+
+.remove__btn {
+    max-width: 27px;
+    height: auto;
+    cursor: pointer;
+}
+
+.edit__btn img{
+    width: 100%;
+    height: 100%;
+}
+
+.remove__btn img{
+    width: 100%;
+    height: 100%;
+}
+
+.address__input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 15px;
+}
+
+.address__input input {
+    max-width: 500px;
+    height: 30px;
+}
+
+.checkbox-row {
+    display: flex;
+    font-size: 13px;
+    justify-content: center;
+    column-gap: 15px;
+    padding-top: 15px;
+}
+
+.checkbox {
+    margin-right: 6px;
+}
+
+.password-field {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    column-gap: 10px;
+}
+
+.password-field input{
+    padding: 5px;
+    border: solid 2px rgba(27, 57, 134, 0.575);
+    border-radius: 5px;
+    // box-shadow: 0px 0px 13px -2px rgba(11, 68, 135, 1);
+    transition: border-color 0.3s ease;
+}
+
+.cancel-address {
+    color: rgba(211, 33, 66, 0.906);
+    font-weight: 500;
+}
+
+.save-address {
+    color: rgb(1, 214, 108);
+    font-weight: 500;
+}
